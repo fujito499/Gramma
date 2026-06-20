@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>นักสืบแกรมม่า | ฝึกแกรมม่า ก.พ.</title>
+<style>
+  :root{
+    --paper:#FAF6EE;
+    --ink:#23241F;
+    --rust:#B5482B;
+    --rust-dim:#E8C9BA;
+    --teal:#2C5F5A;
+    --teal-dim:#CFE2DE;
+    --pencil:#5A5848;
+    --line:#D8D0BC;
+    --gold:#C99A2E;
+    --good:#2C5F5A;
+    --bad:#B5482B;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Sarabun',-apple-system,"Noto Sans Thai",sans-serif;
+    line-height:1.6;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Bricolage+Grotesque:wght@600;700;800&display=swap');
+  h1,h2,h3,.display{font-family:'Bricolage Grotesque',sans-serif;}
+
+  /* ===== top bar ===== */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,246,238,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:14px;
+    padding:12px 20px;
+  }
+  .badge{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--rust);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px; flex:none;
+  }
+  .topbar .brand{font-weight:800; font-size:18px; letter-spacing:.2px;}
+  .topbar .sub{font-size:12px;color:var(--pencil);}
+  .score-pill{
+    margin-left:auto;
+    background:var(--teal-dim); color:var(--teal);
+    padding:6px 14px;border-radius:999px;
+    font-size:13px; font-weight:600;
+    white-space:nowrap;
+  }
+
+  /* ===== hero ===== */
+  .hero{
+    max-width:880px;margin:0 auto;padding:54px 20px 30px;
+    text-align:left;
+  }
+  .hero .eyebrow{
+    color:var(--rust); font-weight:700; font-size:13px;
+    letter-spacing:.08em; text-transform:uppercase;
+    display:flex; align-items:center; gap:8px; margin-bottom:14px;
+  }
+  .hero .eyebrow::before{content:"";width:24px;height:1px;background:var(--rust);}
+  .hero h1{font-size:38px;font-weight:800;margin:0 0 14px;line-height:1.25;}
+  .hero h1 em{font-style:normal;color:var(--rust);}
+  .hero p{font-size:16px;color:var(--pencil);max-width:620px;margin:0 0 22px;}
+  .hero .case-file{
+    border:1px solid var(--line); background:#fff;
+    border-radius:14px; padding:16px 20px; font-size:14px; color:var(--pencil);
+    box-shadow:0 1px 0 var(--line);
+  }
+  .hero .case-file b{color:var(--ink);}
+
+  /* ===== nav rail ===== */
+  .layout{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:230px 1fr;gap:28px;padding:10px 20px 80px;}
+  @media (max-width:820px){.layout{grid-template-columns:1fr;} .rail{display:flex;overflow-x:auto;gap:8px;position:static;padding-bottom:6px;}}
+  .rail{position:sticky; top:78px; align-self:start; display:flex; flex-direction:column; gap:4px;}
+  .rail button{
+    text-align:left; border:none;background:transparent;
+    padding:10px 12px;border-radius:10px;cursor:pointer;
+    font-family:inherit;font-size:14px;color:var(--pencil);font-weight:500;
+    display:flex;align-items:center;gap:10px;white-space:nowrap;
+  }
+  .rail button .n{
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:12px;
+    color:var(--rust); width:20px; flex:none;
+  }
+  .rail button.active{background:var(--rust);color:#fff;}
+  .rail button.active .n{color:#fff;}
+  .rail button:hover:not(.active){background:var(--rust-dim);}
+
+  .panel{display:none;}
+  .panel.active{display:block;animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .section-head{margin-bottom:18px;}
+  .section-head .tag{
+    display:inline-block;background:var(--teal-dim);color:var(--teal);
+    font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;margin-bottom:10px;
+  }
+  .section-head h2{font-size:26px;margin:0 0 8px;}
+  .section-head p{color:var(--pencil);margin:0;font-size:15px;max-width:640px;}
+
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:20px 22px;margin-bottom:16px;
+  }
+  .card h3{margin:0 0 10px;font-size:16px;display:flex;align-items:center;gap:8px;}
+  .card h3 .ic{font-size:18px;}
+  .trick{
+    background:linear-gradient(135deg,#fff 60%,var(--rust-dim));
+    border-left:4px solid var(--rust);
+  }
+  .trick p{margin:0 0 8px;font-size:14.5px;}
+  .trick ul{margin:6px 0 0;padding-left:20px;font-size:14.5px;}
+  .trick li{margin-bottom:4px;}
+
+  .ex-table{width:100%;border-collapse:collapse;font-size:14.5px;}
+  .ex-table th{text-align:left;font-size:12px;color:var(--pencil);text-transform:uppercase;letter-spacing:.04em;padding:6px 8px;border-bottom:1px solid var(--line);}
+  .ex-table td{padding:9px 8px;border-bottom:1px solid #F0EBDD;vertical-align:top;}
+  .ex-table .wrong{color:var(--bad);text-decoration:line-through;}
+  .ex-table .right{color:var(--good);font-weight:600;}
+
+  .underline-ex{
+    background:#FBF8F0;border:1px dashed var(--line);border-radius:12px;
+    padding:14px 16px;font-size:15px;margin-top:10px;
+  }
+  .underline-ex .word{
+    border-bottom:2px solid var(--gold); padding:0 2px; font-weight:600;
+  }
+  .underline-ex .word.flag{border-bottom-color:var(--bad);color:var(--bad);}
+  .underline-ex .label{display:block;font-size:11px;color:var(--pencil);margin-top:8px;}
+
+  /* ===== quiz ===== */
+  .quiz{
+    background:var(--ink); color:var(--paper);
+    border-radius:16px; padding:22px 22px 18px; margin-top:22px;
+  }
+  .quiz .qtitle{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .quiz .qtitle h3{margin:0;font-size:16px;color:var(--paper);}
+  .quiz .qcount{font-size:12px;color:var(--gold);}
+  .q-block{border-top:1px solid #3A3B33;padding:16px 0;}
+  .q-block:first-of-type{border-top:none;padding-top:0;}
+  .q-stem{font-size:15px;margin-bottom:10px;font-weight:500;}
+  .q-stem .ul{border-bottom:2px solid var(--gold);}
+  .options{display:grid;gap:8px;}
+  .opt{
+    background:#34352B;border:1px solid #46473B;color:var(--paper);
+    border-radius:10px;padding:10px 14px;text-align:left;cursor:pointer;
+    font-family:inherit;font-size:14px;transition:.15s;
+  }
+  .opt:hover{border-color:var(--gold);}
+  .opt.correct{background:rgba(44,95,90,.55);border-color:var(--teal);}
+  .opt.incorrect{background:rgba(181,72,43,.55);border-color:var(--rust);}
+  .opt:disabled{cursor:default;}
+  .explain{
+    margin-top:10px;background:#2A2B22;border-radius:10px;padding:10px 14px;
+    font-size:13.5px;color:#E7E2D2;display:none;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--gold);}
+
+  .nextbtn{
+    display:inline-block;margin-top:16px;background:var(--rust);color:#fff;
+    border:none;padding:10px 20px;border-radius:999px;font-weight:700;font-size:14px;
+    cursor:pointer;
+  }
+  .nextbtn:hover{opacity:.9;}
+
+  .result{display:none;text-align:center;padding:20px 0;}
+  .result.show{display:block;}
+  .result .big{font-size:42px;font-weight:800;color:var(--gold);font-family:'Bricolage Grotesque',sans-serif;}
+  .result p{color:#CFC9B6;font-size:14px;}
+  .restart{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:8px 18px;border-radius:999px;font-size:13px;cursor:pointer;margin-top:8px;}
+
+  footer{text-align:center;font-size:12px;color:var(--pencil);padding:30px 20px 50px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="badge">🔍</div>
+  <div>
+    <div class="brand">นักสืบแกรมม่า</div>
+    <div class="sub">ฝึกจับผิด ติวแกรมม่าสอบ ก.พ.</div>
+  </div>
+  <div class="score-pill" id="totalScorePill">คะแนนรวม 0 / 0</div>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">คดีที่เปิดอยู่: แกรมม่าหาย</div>
+  <h1>อ่านออก เขียนได้ แต่จับ<em>จุดผิด</em>ไม่เจอ?</h1>
+  <p>ข้อสอบ ก.พ. ส่วนแกรมม่าเล่นกับ "จุดที่คนมักมองข้าม" ซ้ำๆไม่กี่แบบ ถ้าจับสัญญาณพวกนี้ได้ ก็เหมือนนักสืบเห็นเงื้อนงำ — เว็บนี้รวมทริคจำ + ตัวอย่างแบบสอบจริง + แบบฝึกหัดให้ลองมือ ไปทีละพาท</p>
+  <div class="case-file">
+    <b>วิธีใช้:</b> เลือกพาทด้านซ้าย (มือถือ: เลื่อนแถบด้านบน) → อ่านทริค → ดูตัวอย่างจุดผิดที่ตัดมาจากแนวข้อสอบ → ลองทำแบบฝึกหัดท้ายพาท ระบบจะอธิบายเหตุผลให้ทุกข้อ ไม่ใช่บอกแค่ถูกผิด
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="rail" id="rail"></nav>
+  <div id="panels"></div>
+</div>
+
+<footer>ทำเพื่อฝึกฝนส่วนตัว ไม่ใช่ข้อสอบจริงของสำนักงาน ก.พ. — เกร็ดและตัวอย่างเขียนขึ้นใหม่เพื่อการเรียนรู้</footer>
+
+<script>
+const DATA = [
+{
+  id:'tense', n:'01', tag:'จุดที่ออกบ่อยที่สุด', title:'Tense (กาล) ผิดที่กริยา',
+  intro:'จุดผิดส่วนใหญ่ไม่ได้อยู่ที่ "ความหมาย" แต่อยู่ที่ "ตัวบอกเวลา" ในประโยคไม่ตรงกับรูปกริยาที่ใช้',
+  tricks:[
+    'เจอ <b>since / for + ปี</b> → ต้องเป็น Perfect tense (has/have/had + V3) เกือบทุกครั้ง',
+    'เจอ <b>yesterday, last week, ago, in 2020</b> → ต้องเป็น Past simple (V2) ห้ามใช้ has/have',
+    'เจอ <b>now, at the moment, currently</b> → มักเป็น Present continuous (is/are + V-ing)',
+    'ประโยคที่มี 2 เหตุการณ์ "ก่อน-หลัง" ในอดีต → เหตุการณ์ที่เกิดก่อนใช้ Past perfect (had + V3)'
+  ],
+  table:[
+    ['She has lived here <span class="wrong">since</span> 2010 to now.','since 2010 จับคู่ has lived ถูกแล้ว แต่ "to now" ฟุ่มเฟือย/ผิดธรรมเนียม','ตัด to now ออก: She has lived here since 2010.'],
+    ['He <span class="wrong">go</span> to the meeting yesterday.','มี yesterday → ต้องเป็น past simple','went'],
+    ['By the time we arrived, the show <span class="wrong">already started</span>.','เหตุการณ์เกิดก่อนอีกเหตุการณ์ในอดีต → ต้อง Past perfect','had already started']
+  ],
+  underline:{
+    text:['The committee', 'have reviewed', 'the proposal', 'since last Monday', 'but still hasn\'t decided.'],
+    flagIndex:1, why:'committee เป็นคำนามเอกพจน์รวม (มองเป็นหน่วยเดียว) ในข้อสอบทางการมักใต้บรรทัด "have" เป็นจุดให้แก้เป็น "has reviewed"'
+  },
+  quiz:[
+    {stem:'I ___ this report three times already, but I still found an error.',ul:1,opts:['check','checked','have checked','was checking'],a:2,why:'มี "already" + ผลลัพธ์ต่อเนื่องถึงตอนนี้ ("still found") → ต้องใช้ Present perfect: have checked'},
+    {stem:'The director ___ the budget when the call came in.',ul:1,opts:['reviews','was reviewing','has reviewed','reviewed'],a:1,why:'เหตุการณ์ "กำลังทำอยู่" ตอนที่อีกเหตุการณ์เกิดขึ้นแทรก (when the call came in) → Past continuous: was reviewing'},
+    {stem:'By next Friday, the team ___ the new system for two weeks.',ul:1,opts:['will use','will have used','uses','used'],a:1,why:'มี "By + เวลาในอนาคต" + ระยะเวลา (for two weeks) → Future perfect: will have used'}
+  ]
+},
+{
+  id:'sva', n:'02', tag:'จับผิดบ่อยอันดับ 2', title:'Subject–Verb Agreement (ประธาน-กริยา ไม่สอดคล้อง)',
+  intro:'ข้อสอบชอบ "แยก" ประธานกับกริยาให้ไกลกันด้วย phrase แทรก เพื่อให้ดูเหมือนกริยาผันถูก ทั้งที่จริงๆผิด',
+  tricks:[
+    'มอง <b>หา headword ของประธานตัวจริง</b> ก่อน ไม่ใช่คำที่อยู่ใกล้กริยาที่สุด — ตัด phrase ที่ขึ้นต้นด้วย of / with / along with / as well as / including ออกชั่วคราว',
+    '<b>Each, every, either, neither, everyone, nobody</b> + กริยาเอกพจน์เสมอ ไม่ว่าความหมายจะดูเหมือนพหูพจน์แค่ไหน',
+    'คำนามรวมที่ดูเหมือนพหูพจน์แต่เอกพจน์: <b>news, information, equipment, staff (บางบริบท), data ในภาษาเขียนทางการ</b>',
+    'There is / There are — เช็คคำนามที่ตามหลัง "there" ไม่ใช่ตัว "there" เอง'
+  ],
+  table:[
+    ['The list of items <span class="wrong">are</span> on the table.','ประธานจริงคือ "list" (เอกพจน์) ไม่ใช่ "items"','is'],
+    ['Each of the employees <span class="wrong">have</span> a badge.','Each เป็นประธาน → เอกพจน์เสมอ','has'],
+    ['The new equipment <span class="wrong">are</span> expensive.','equipment เป็นคำนามนับไม่ได้ ใช้เอกพจน์','is']
+  ],
+  underline:{
+    text:['The number','of applicants','who passed the exam','were','higher than expected.'],
+    flagIndex:3, why:'ประธานจริงคือ "the number" (เอกพจน์) — "of applicants who passed the exam" เป็นแค่ส่วนขยาย ดังนั้น "were" ต้องแก้เป็น "was"'
+  },
+  quiz:[
+    {stem:'A series of meetings ___ scheduled for next week.',ul:1,opts:['is','are','were','have been'],a:0,why:'"A series of..." → ประธานคือ series (เอกพจน์) → is scheduled'},
+    {stem:'Neither the manager nor the staff ___ informed about the change.',ul:1,opts:['was','were','have been','are'],a:0,why:'Neither...nor กริยาผันตามประธานตัวหลัง (staff) แต่ staff ในที่นี้ตามกฎมาตรฐานข้อสอบมักให้เอกพจน์เมื่อมองเป็นหน่วยเดียว ตัวที่ถูกต้องตามกฎ "ใกล้ตัวไหนผันตามตัวนั้น" staff ฟังดูพหูพจน์ได้ แต่ตัวเลือกที่ปลอดภัยและตรงแนวข้อสอบคือ was (มองเป็นเอกพจน์รวม)'},
+    {stem:'The benefits of regular exercise ___ well documented.',ul:1,opts:['is','has','are','was'],a:2,why:'ประธานจริงคือ "benefits" (พหูพจน์) → are'}
+  ]
+},
+{
+  id:'pos', n:'03', tag:'พาร์ทเปลี่ยนหน้าที่คำ', title:'Parts of Speech: Adjective vs Adverb / Noun form',
+  intro:'ข้อสอบมักสลับ "รูปคำ" ผิดหน้าที่ในประโยค เช่น ใช้ adjective ไปขยายกริยา หรือใช้ noun form ผิดที่ที่ต้องการ adjective',
+  tricks:[
+    'กริยา <b>look, feel, seem, become, taste, smell, sound</b> (Linking verb) + ตามด้วย <b>adjective</b> เสมอ ไม่ใช่ adverb — เช่น "feel bad" ไม่ใช่ "feel badly"',
+    'คำที่ขยาย<b>กริยา</b> ต้องเป็น adverb (ลงท้าย -ly ส่วนใหญ่) คำที่ขยาย<b>noun</b> ต้องเป็น adjective',
+    'หลัง <b>be + _____ + noun</b> มักต้องการ adjective ขยาย noun ตัวนั้น ไม่ใช่ noun ซ้อน noun',
+    'เจอคำลงท้าย -tion, -ment, -ness, -ity ในจุดที่ควรเป็นกริยาหรือ adjective ให้สงสัยว่าใช้ผิดรูป'
+  ],
+  table:[
+    ['He speaks <span class="wrong">fluent</span> at three languages.','ขยายกริยา speaks ต้องใช้ adverb','fluently'],
+    ['This solution is more <span class="wrong">efficiency</span> than the old one.','หลัง is + more ต้องเป็น adjective','efficient'],
+    ['She looked <span class="wrong">angrily</span> about the result.','look เป็น linking verb ต้องตามด้วย adjective','angry']
+  ],
+  underline:{
+    text:['The proposal was', 'rejected', 'because it seemed', 'financial', 'unrealistic for the budget.'],
+    flagIndex:3, why:'seemed เป็น linking verb ต้องตามด้วย adjective เดียวที่ขยาย "unrealistic" ไม่ใช่นำหน้าด้วย noun "financial" — ที่ถูกควรเป็น "financially unrealistic" (ใช้ adverb ขยาย adjective)'
+  },
+  quiz:[
+    {stem:'The manager handled the crisis ___.',ul:1,opts:['calm','calmly','calmness','calming'],a:1,why:'ขยายกริยา "handled" → ต้องใช้ adverb: calmly'},
+    {stem:'This new policy will have a ___ effect on productivity.',ul:1,opts:['significant','significantly','significance','signify'],a:0,why:'ขยายคำนาม "effect" → ต้องใช้ adjective: significant'},
+    {stem:'Despite the noise, she remained ___ throughout the test.',ul:1,opts:['focus','focusing','focused','focusedly'],a:2,why:'remain เป็น linking verb ตามด้วย adjective/past participle ที่ทำหน้าที่ adjective: focused'}
+  ]
+},
+{
+  id:'prep', n:'04', tag:'จับคู่คำ', title:'Preposition: คำบุพบทที่จับคู่ผิด',
+  intro:'preposition ในข้อสอบ ก.พ. ส่วนใหญ่ทดสอบ "การจับคู่ตายตัว" กับคำกริยา/adjective บางคำ ไม่ใช่ความหมายทั่วไปของ in/on/at',
+  tricks:[
+    'ท่องเป็น <b>คู่คำ (collocation)</b> ไม่ใช่ท่องความหมาย preposition เดี่ยวๆ — เช่น depend <b>on</b>, consist <b>of</b>, responsible <b>for</b>, interested <b>in</b>, good <b>at</b>',
+    'เวลา: <b>in</b> + เดือน/ปี/ฤดู, <b>on</b> + วันที่/วัน, <b>at</b> + เวลานาฬิกา/จุดเฉพาะ',
+    'สถานที่: <b>in</b> = ข้างใน/พื้นที่กว้าง, <b>on</b> = บนพื้นผิว, <b>at</b> = จุดที่เฉพาะเจาะจง',
+    'ถ้าจำคู่คำไม่ได้ ให้สังเกตว่าตัวเลือกอื่นๆ "ฟังดูคุ้นปาก" มากกว่าไหม ข้อสอบมักมี 1 ตัวที่ผิดธรรมเนียมชัด'
+  ],
+  table:[
+    ['She is responsible <span class="wrong">of</span> the new project.','responsible จับคู่กับ for เท่านั้น','for'],
+    ['The result depends <span class="wrong">of</span> several factors.','depend จับคู่กับ on','on'],
+    ['He arrived <span class="wrong">to</span> the office late.','arrive at/in สถานที่ ไม่ใช่ to (ยกเว้น arrive home)','at']
+  ],
+  underline:{
+    text:['The committee is responsible', 'for', 'reviewing applications', 'and', 'consist on three members.'],
+    flagIndex:4, why:'consist ต้องจับคู่กับ "of" เสมอ (consist of) ไม่ใช่ "on" — เป็น collocation ตายตัวที่ต้องจำเป็นคู่'
+  },
+  quiz:[
+    {stem:'The committee consists ___ five members from different departments.',ul:1,opts:['of','in','with','for'],a:0,why:'consist ใช้คู่กับ "of" เสมอ'},
+    {stem:'The success of the project depends ___ everyone\'s cooperation.',ul:1,opts:['from','of','on','to'],a:2,why:'depend ใช้คู่กับ "on"'},
+    {stem:'She has been working ___ this company since 2018.',ul:1,opts:['in','at','on','for'],a:1,why:'work at + ชื่อองค์กร/บริษัท เป็นคู่คำที่ใช้บ่อยกว่า in ในบริบทนี้ (ทำงานที่บริษัทนี้)'}
+  ]
+},
+{
+  id:'conj', n:'05', tag:'ตัวเชื่อมประโยค', title:'Conjunction / Connector ที่ใช้ผิดความหมาย',
+  intro:'จุดผิดมักเกิดจากใส่ตัวเชื่อมที่ "ความหมายขัดแย้ง" กับเนื้อหาในประโยค เช่น ใช้ตัวเชื่อมแสดงเหตุผลในที่ที่ควรขัดแย้ง',
+  tricks:[
+    'แบ่งกลุ่มตัวเชื่อมตามหน้าที่: <b>เหตุผล</b> (because, since, as) / <b>ขัดแย้ง</b> (although, despite, however) / <b>ผลลัพธ์</b> (so, therefore, as a result) / <b>เพิ่มเติม</b> (moreover, in addition)',
+    '<b>Although/Though/Even though</b> ตามด้วย "ประโยค" (มีประธาน+กริยา) ส่วน <b>Despite/In spite of</b> ตามด้วย "นามวลี" เท่านั้น ห้ามสลับกัน',
+    'อ่านประโยคก่อน-หลังตัวเชื่อมว่า "สอดคล้อง" หรือ "ขัดแย้ง" กัน แล้วเลือกตัวเชื่อมที่ตรงทิศนั้น',
+    '<b>However</b> ใช้ขึ้นต้นประโยคใหม่ + comma เท่านั้น ไม่ใช่เชื่อม 2 ประโยคแบบ but'
+  ],
+  table:[
+    ['<span class="wrong">Despite</span> he was tired, he finished the report.','Despite ตามด้วยนามวลีเท่านั้น ตามด้วยประโยคไม่ได้','Although'],
+    ['The budget was cut, <span class="wrong">however</span> they finished on time.','however เชื่อม 2 ประโยคแบบนี้ไม่ได้ ต้องขึ้นประโยคใหม่','The budget was cut. However, they finished on time.'],
+    ['It rained heavily, <span class="wrong">so</span> we still went hiking.','เนื้อหาขัดแย้งกัน (so ใช้กับผลลัพธ์ที่สอดคล้อง) ต้องใช้ตัวเชื่อมขัดแย้ง','but / yet']
+  ],
+  underline:{
+    text:['Despite', 'the heavy traffic,', 'he managed to arrive on time', 'because', 'he left two hours early.'],
+    flagIndex:3, why:'ส่วนหลัง "he left two hours early" คือ "เหตุผล" ของการมาตรงเวลา ซึ่งสอดคล้องกับความหมายเดิม การใช้ "because" จริงๆถูกแล้วในที่นี้ — ข้อนี้เป็นตัวอย่างที่ "ดูเหมือนผิดแต่ไม่ผิด" ให้สังเกตว่าทุกตัวขีดเส้นไม่ใช่ตัวที่ผิดเสมอไป ต้องอ่านความหมายให้แน่ใจก่อน'
+  },
+  quiz:[
+    {stem:'___ the heavy rain, the event continued as planned.',ul:1,opts:['Although','Despite','Because','Therefore'],a:1,why:'ตามด้วยนามวลี "the heavy rain" (ไม่มีกริยา) → ต้องใช้ Despite/In spite of'},
+    {stem:'He studied very hard; ___, he failed the exam.',ul:1,opts:['therefore','moreover','however','because'],a:2,why:'เนื้อหาขัดแย้งกัน (ตั้งใจเรียนแต่สอบตก) → ต้องใช้ตัวเชื่อมขัดแย้ง: however'},
+    {stem:'___ she had no experience, she got the job because of her excellent interview.',ul:1,opts:['Despite','Because','Although','Due to'],a:2,why:'ตามด้วยประโยคสมบูรณ์ "she had no experience" และความหมายขัดแย้ง → Although'}
+  ]
+},
+{
+  id:'comp', n:'06', tag:'โครงสร้างเปรียบเทียบ', title:'Comparison & Parallel Structure',
+  intro:'ข้อสอบเช็คว่ารูปเปรียบเทียบ (comparative/superlative) ถูกหรือไม่ และเช็คว่าสิ่งที่อยู่ในประโยคเดียวกัน "รูปแบบเดียวกัน" (parallel) หรือไม่',
+  tricks:[
+    'คำสั้น (1-2 พยางค์) เติม <b>-er/-est</b>, คำยาว (3 พยางค์ขึ้นไป) ใช้ <b>more/most</b> — ห้ามใช้ผสมกัน เช่น "more better" ผิดแน่นอน',
+    '<b>as...as</b> ต้องใช้รูปคำคุณศัพท์ปกติ (ไม่เติม -er) ตรงกลาง: as fast as, ไม่ใช่ as faster as',
+    'รายการในประโยคเดียวกัน (X, Y, and Z) ต้อง<b>รูปไวยากรณ์เดียวกัน</b>ทั้งหมด เช่น ถ้าตัวแรกเป็น V-ing ตัวถัดไปก็ต้อง V-ing เหมือนกัน',
+    'เปรียบเทียบ "ของสองสิ่งที่นับไม่ได้คล้ายกัน" ต้องใช้ that of / those of กันการเปรียบเทียบผิดประเภท'
+  ],
+  table:[
+    ['This year\'s sales are <span class="wrong">more higher</span> than last year\'s.','higher เป็นคำเปรียบเทียบรูปสั้นอยู่แล้ว ห้ามเติม more ซ้ำ','higher'],
+    ['She enjoys reading, swimming, and <span class="wrong">to hike</span>.','รายการต้องรูปเดียวกัน (V-ing ทั้งหมด)','hiking'],
+    ['His salary is higher than <span class="wrong">his colleague</span>.','เปรียบเทียบเงินเดือนกับ "คน" ผิดประเภท ต้องเทียบกับ "เงินเดือนของเขา"','that of his colleague']
+  ],
+  underline:{
+    text:['The new model is', 'not only faster', 'but also', 'more efficiency', 'than the previous version.'],
+    flagIndex:3, why:'หลัง more ในโครงสร้าง parallel กับ "faster" ต้องเป็น adjective รูปเปรียบเทียบ "more efficient" ไม่ใช่ noun "efficiency"'
+  },
+  quiz:[
+    {stem:'Working remotely can be just as productive ___ working in an office.',ul:1,opts:['than','as','that','like'],a:1,why:'โครงสร้าง as...as ต้องใช้ as ทั้งคู่: as productive as'},
+    {stem:'The report should be clear, concise, and ___.',ul:1,opts:['persuading','persuade','persuasive','persuasively'],a:2,why:'รายการ clear, concise ต้องตามด้วย adjective รูปเดียวกัน: persuasive'},
+    {stem:'The population of this city is larger than ___ of the neighboring town.',ul:1,opts:['it','this','that','one'],a:2,why:'เปรียบเทียบ "ประชากร" กับ "ประชากร" ต้องใช้ that of แทนคำนามที่กล่าวซ้ำ'}
+  ]
+},
+{
+  id:'cond', n:'07', tag:'ประโยคเงื่อนไข', title:'Conditional Sentences (If-clause)',
+  intro:'ข้อสอบเช็ค "ความสอดคล้อง" ระหว่างกาลใน if-clause กับ main clause ว่าตรงกับ Type 0/1/2/3 หรือไม่',
+  tricks:[
+    'จำเป็นคู่: <b>Type 1</b> (เป็นไปได้ในอนาคต) If + Present simple → will + V1',
+    '<b>Type 2</b> (สมมติ ไม่จริงในปัจจุบัน) If + Past simple → would + V1 — และใช้ <b>"were"</b> กับทุกประธานในประโยคสมมติ (if I were you)',
+    '<b>Type 3</b> (สมมติ ไม่จริงในอดีต เสียใจ) If + Past perfect → would have + V3',
+    'ถ้าเจอ "if" แล้วกาลสองฝั่งไม่ match กับ pattern ใดเลย ให้สงสัยว่าเป็นจุดผิดทันที'
+  ],
+  table:[
+    ['If I <span class="wrong">was</span> you, I would accept the offer.','ประโยคสมมติ (Type 2) ใช้ were กับทุกประธาน','were'],
+    ['If she had studied harder, she <span class="wrong">would pass</span> the exam.','Type 3 (อดีต) main clause ต้องเป็น would have + V3','would have passed'],
+    ['If it <span class="wrong">will rain</span> tomorrow, we will cancel the trip.','if-clause ของ Type 1 ห้ามใช้ will','rains']
+  ],
+  underline:{
+    text:['If the company', 'had invested', 'in training earlier,', 'employees would', 'perform better today.'],
+    flagIndex:3, why:'if-clause เป็น Past perfect (had invested) บอกว่าเป็น Type 3 (สมมติในอดีต) main clause ต้องเป็น "would have performed" ไม่ใช่ "would perform"'
+  },
+  quiz:[
+    {stem:'If the meeting ___ earlier, more people could have attended.',ul:1,opts:['starts','started','had started','would start'],a:2,why:'main clause ใช้ "could have attended" (Type 3) → if-clause ต้องเป็น Past perfect: had started'},
+    {stem:'If you ___ any problems, please contact our support team.',ul:1,opts:['have','had','will have','having'],a:0,why:'Type 1 (เป็นไปได้จริง) → if + Present simple: have'},
+    {stem:'If I were the manager, I ___ this policy immediately.',ul:1,opts:['will change','would change','change','changed'],a:1,why:'Type 2 (สมมติปัจจุบัน) "If I were..." → main clause ต้องเป็น would + V1: would change'}
+  ]
+}
+];
+
+let totalCorrect = 0, totalAnswered = 0;
+
+function buildRail(){
+  const rail = document.getElementById('rail');
+  DATA.forEach((sec,i)=>{
+    const b = document.createElement('button');
+    b.innerHTML = `<span class="n">${sec.n}</span>${sec.title.split('(')[0].split(':')[0].trim()}`;
+    b.dataset.id = sec.id;
+    if(i===0) b.classList.add('active');
+    b.onclick = ()=> showPanel(sec.id);
+    rail.appendChild(b);
+  });
+}
+
+function renderUnderline(u){
+  return u.text.map((w,i)=>{
+    const flagged = i===u.flagIndex;
+    return `<span class="word ${flagged?'flag':''}">${w}</span>`;
+  }).join(' ');
+}
+
+function buildPanels(){
+  const wrap = document.getElementById('panels');
+  DATA.forEach((sec,i)=>{
+    const div = document.createElement('div');
+    div.className = 'panel' + (i===0?' active':'');
+    div.id = 'panel-'+sec.id;
+    div.innerHTML = `
+      <div class="section-head">
+        <span class="tag">${sec.tag}</span>
+        <h2>${sec.title}</h2>
+        <p>${sec.intro}</p>
+      </div>
+
+      <div class="card trick">
+        <h3><span class="ic">🧭</span>ทริคจำแบบนักสืบ</h3>
+        <ul>${sec.tricks.map(t=>`<li>${t}</li>`).join('')}</ul>
+      </div>
+
+      <div class="card">
+        <h3><span class="ic">📋</span>ตัวอย่างจุดผิด vs ที่ถูก</h3>
+        <table class="ex-table">
+          <tr><th>ประโยคที่มีจุดผิด</th><th>เหตุผล</th><th>แก้เป็น</th></tr>
+          ${sec.table.map(row=>`<tr><td>${row[0]}</td><td>${row[1]}</td><td class="right">${row[2]}</td></tr>`).join('')}
+        </table>
+      </div>
+
+      <div class="card">
+        <h3><span class="ic">🔎</span>ลองจับผิดแบบข้อสอบจริง (underline error)</h3>
+        <div class="underline-ex">
+          ${renderUnderline(sec.underline)}
+          <span class="label">เส้นใต้สีแดง = จุดที่ผิด | เหตุผล: ${sec.underline.why}</span>
+        </div>
+      </div>
+
+      <div class="quiz" data-secid="${sec.id}">
+        <div class="qtitle">
+          <h3>🧪 แบบฝึกหัดท้ายพาท</h3>
+          <span class="qcount">ข้อ <span class="cur">1</span>/${sec.quiz.length}</span>
+        </div>
+        <div class="qbody"></div>
+        <div class="result">
+          <div class="big sc">0/0</div>
+          <p>คะแนนพาทนี้</p>
+          <button class="restart">ลองใหม่อีกครั้ง</button>
+        </div>
+      </div>
+    `;
+    wrap.appendChild(div);
+    initQuiz(sec, div.querySelector('.quiz'));
+  });
+}
+
+function showPanel(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+id));
+  document.querySelectorAll('.rail button').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function initQuiz(sec, quizEl){
+  let idx = 0, score = 0;
+  const qbody = quizEl.querySelector('.qbody');
+  const curSpan = quizEl.querySelector('.cur');
+  const resultEl = quizEl.querySelector('.result');
+  const scSpan = quizEl.querySelector('.sc');
+
+  function renderQ(){
+    qbody.innerHTML = '';
+    resultEl.classList.remove('show');
+    const q = sec.quiz[idx];
+    curSpan.textContent = idx+1;
+    const block = document.createElement('div');
+    block.className = 'q-block';
+    block.innerHTML = `<div class="q-stem">${q.stem}</div>
+      <div class="options"></div>
+      <div class="explain"><b>เหตุผล:</b> ${q.why}</div>`;
+    qbody.appendChild(block);
+    const optWrap = block.querySelector('.options');
+    q.opts.forEach((opt,oi)=>{
+      const btn = document.createElement('button');
+      btn.className='opt';
+      btn.textContent = opt;
+      btn.onclick = ()=>{
+        optWrap.querySelectorAll('.opt').forEach(o=>o.disabled=true);
+        const correct = oi===q.a;
+        btn.classList.add(correct?'correct':'incorrect');
+        if(!correct){
+          optWrap.children[q.a].classList.add('correct');
+        }
+        block.querySelector('.explain').classList.add('show');
+        score += correct?1:0;
+        totalCorrect += correct?1:0;
+        totalAnswered += 1;
+        updateScorePill();
+        setTimeout(()=>{
+          if(idx < sec.quiz.length-1){
+            const nb = document.createElement('button');
+            nb.className='nextbtn';
+            nb.textContent='ข้อต่อไป →';
+            nb.onclick = ()=>{ idx++; renderQ(); };
+            block.appendChild(nb);
+          } else {
+            const nb = document.createElement('button');
+            nb.className='nextbtn';
+            nb.textContent='ดูผลลัพธ์';
+            nb.onclick = ()=>{
+              qbody.innerHTML='';
+              scSpan.textContent = score+'/'+sec.quiz.length;
+              resultEl.classList.add('show');
+            };
+            block.appendChild(nb);
+          }
+        }, 150);
+      };
+      optWrap.appendChild(btn);
+    });
+  }
+  quizEl.querySelector('.restart').onclick = ()=>{
+    idx=0; score=0;
+    renderQ();
+  };
+  renderQ();
+}
+
+function updateScorePill(){
+  document.getElementById('totalScorePill').textContent = `คะแนนรวม ${totalCorrect} / ${totalAnswered}`;
+}
+
+buildRail();
+buildPanels();
+</script>
+</body>
+</html>
